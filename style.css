@@ -5,7 +5,7 @@
 }
 
 body {
-    background-color: #FFE4E8;
+    background-color: #E8F5E9;
     font-family: 'Nunito', sans-serif;
     min-height: 100vh;
     display: flex;
@@ -13,12 +13,12 @@ body {
     align-items: center;
     overflow: hidden;
     background-image:
-        radial-gradient(circle at 15% 85%, #ffb3c1 0%, transparent 40%),
-        radial-gradient(circle at 85% 15%, #ff8fa3 0%, transparent 40%),
-        radial-gradient(circle at 50% 50%, #fff0f3 0%, transparent 60%);
+        radial-gradient(circle at 15% 85%, #a5d6a7 0%, transparent 40%),
+        radial-gradient(circle at 85% 15%, #81c784 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, #f1f8e9 0%, transparent 60%);
 }
 
-/* Floating hearts background */
+/* Floating flowers/leaves background */
 .hearts-bg {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
@@ -29,10 +29,10 @@ body {
 
 .hearts-bg::before,
 .hearts-bg::after {
-    content: '💕 💗 💖 💝 💓';
+    content: '🌷 🌿 🌸 🍀 🌻';
     position: absolute;
     font-size: 1.5rem;
-    opacity: 0.15;
+    opacity: 0.25;
     animation: floatHearts 12s linear infinite;
     white-space: nowrap;
     top: 100%;
@@ -42,7 +42,7 @@ body {
 .hearts-bg::after {
     animation-delay: 6s;
     left: 60%;
-    content: '💗 💕 💓 💖 💝';
+    content: '🌿 🌷 🍀 🌼 🌱';
 }
 
 @keyframes floatHearts {
@@ -59,10 +59,10 @@ body {
 
 h1 {
     font-size: 2.4rem;
-    color: #d63384;
+    color: #2e7d32;
     font-weight: 900;
     margin-bottom: 20px;
-    text-shadow: 2px 2px 0px rgba(214, 51, 132, 0.2);
+    text-shadow: 2px 2px 0px rgba(46, 125, 50, 0.2);
     animation: wiggle 2s ease-in-out infinite;
 }
 
@@ -140,7 +140,7 @@ h1 {
 #tease-toast {
     margin-top: 14px;
     font-size: 1rem;
-    color: #d63384;
+    color: #2e7d32;
     font-weight: 700;
     font-style: italic;
     opacity: 0;
@@ -189,7 +189,7 @@ h1 {
 
 .yes-message {
     font-size: 1.4rem;
-    color: #e91e8c;
+    color: #2e7d32;
     font-weight: 700;
     margin-top: 24px;
     animation: fadeIn 1s ease 0.5s both;
@@ -203,4 +203,61 @@ h1 {
 .yes-container #cat-gif {
     width: 260px;
     height: 260px;
+}
+
+.dinner-card {
+    margin: 28px auto 0;
+    padding: 22px 32px;
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(10px);
+    border: 1.5px solid rgba(46, 125, 50, 0.25);
+    border-radius: 20px;
+    display: inline-block;
+    box-shadow: 0 8px 24px rgba(46, 125, 50, 0.15);
+    animation: fadeIn 1s ease 1s both;
+}
+
+.dinner-line {
+    font-size: 1.1rem;
+    color: #2e7d32;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.dinner-date {
+    font-size: 2rem;
+    color: #1b5e20;
+    font-weight: 900;
+    margin: 6px 0 4px;
+    letter-spacing: 1px;
+}
+
+.dinner-sub {
+    font-size: 0.95rem;
+    color: #4caf50;
+    font-weight: 700;
+    font-style: italic;
+}
+
+.secret-code {
+    position: fixed;
+    bottom: 18px;
+    left: 22px;
+    font-size: 0.95rem;
+    color: rgba(27, 94, 32, 0.85);
+    font-family: 'Courier New', monospace;
+    letter-spacing: 2px;
+    font-weight: 700;
+    user-select: none;
+    z-index: 100;
+    padding: 8px 14px;
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px dashed rgba(46, 125, 50, 0.5);
+    border-radius: 8px;
+    animation: fadeIn 1.5s ease 2s both, codePulse 3s ease-in-out 3.5s infinite;
+}
+
+@keyframes codePulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(46, 125, 50, 0); }
+    50% { box-shadow: 0 0 0 6px rgba(46, 125, 50, 0.12); }
 }
