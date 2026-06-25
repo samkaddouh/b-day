@@ -239,6 +239,23 @@ h1 {
     font-style: italic;
 }
 
+.games-link {
+    display: inline-block;
+    margin-top: 22px;
+    padding: 12px 26px;
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    border-radius: 14px;
+    font-weight: 900;
+    font-family: 'Nunito', sans-serif;
+    text-decoration: none;
+    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.45);
+    letter-spacing: 0.5px;
+    animation: fadeIn 1s ease 1.6s both;
+    transition: transform 0.15s;
+}
+.games-link:hover { transform: scale(1.05) translateY(-2px); }
+
 .secret-code {
     position: fixed;
     bottom: 18px;

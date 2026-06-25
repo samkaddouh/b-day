@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games 🎮🌷</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="games.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+    <div class="hearts-bg"></div>
+
+    <!-- CODE GATE -->
+    <div id="code-gate" class="reveal-modal show">
+        <div class="reveal-card code-card">
+            <p class="reveal-top">🔒 enter the code 🔒</p>
+            <input id="code-input" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="type the code..." />
+            <p id="code-msg" class="code-msg"></p>
+            <button id="code-submit" class="primary-btn">unlock</button>
+        </div>
+    </div>
+
+    <!-- HUB -->
+    <div id="hub" class="game-view active">
+        <h1 class="hub-title">Pick a game 🌷</h1>
+        <p class="hub-sub">one of these works... good luck 😏</p>
+        <div class="hub-grid">
+            <button class="hub-tile locked" data-game="scratch"><span class="tile-emoji">🔒</span><span class="tile-label">???</span></button>
+            <button class="hub-tile locked" data-game="doors"><span class="tile-emoji">🔒</span><span class="tile-label">???</span></button>
+            <button class="hub-tile locked" data-game="catch"><span class="tile-emoji">🔒</span><span class="tile-label">???</span></button>
+            <button class="hub-tile locked" data-game="wheel"><span class="tile-emoji">🔒</span><span class="tile-label">???</span></button>
+            <button class="hub-tile locked" data-game="envelope"><span class="tile-emoji">🔒</span><span class="tile-label">???</span></button>
+        </div>
+        <p id="locked-msg" class="game-msg"></p>
+        <a href="yes.html" class="back-link">← back</a>
+    </div>
+
+    <!-- CATCH -->
+    <div id="game-catch" class="game-view">
+        <h2>Catch 7 green hearts 💚</h2>
+        <p class="game-hint">drag basket left/right · only 💚 counts</p>
+        <div id="catch-stage" class="catch-stage">
+            <div id="catch-score" class="catch-score">0 / 7</div>
+            <div id="basket">🧺</div>
+        </div>
+        <button class="back-btn" data-back>← back</button>
+    </div>
+
+    <!-- SHARED REVEAL MODAL -->
+    <div id="reveal-modal" class="reveal-modal">
+        <div class="reveal-card">
+            <p class="reveal-top">🌷 You found it 🌷</p>
+            <p class="reveal-place">Albergo Hotel</p>
+            <p class="reveal-city">Beirut, Lebanon</p>
+            <p class="reveal-date">Tuesday · July 7 · 8:00 PM</p>
+            <p class="reveal-sub">be ready 💚</p>
+            <button id="reveal-close" class="primary-btn">play again</button>
+        </div>
+    </div>
+
+    <button id="music-toggle" onclick="toggleMusic()" title="Toggle music">🔊</button>
+    <audio id="bg-music" loop>
+        <source src="music/beabadoobee - Glue Song (Lyrics).mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="games.js"></script>
+</body>
+</html>
