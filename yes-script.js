@@ -2,6 +2,7 @@ let musicPlaying = false
 
 window.addEventListener('load', () => {
     launchConfetti()
+    startCountdown()
 
     // Autoplay music (works since user clicked Yes to get here)
     const music = document.getElementById('bg-music')
@@ -47,6 +48,50 @@ function launchConfetti() {
             colors
         })
     }, 300)
+}
+
+function startCountdown() {
+    const target = new Date(2026, 6, 7, 0, 0, 0).getTime() // July 7, 2026, 00:00 local (start of day)
+    const d = document.getElementById('cd-days')
+    const h = document.getElementById('cd-hours')
+    const m = document.getElementById('cd-mins')
+    const s = document.getElementById('cd-secs')
+    if (!d) return
+
+    const tick = () => {
+        const diff = target - Date.now()
+        if (diff <= 0) {
+            d.textContent = h.textContent = m.textContent = s.textContent = '00'
+            return
+        }
+        const days = Math.floor(diff / 86400000)
+        const hours = Math.floor((diff % 86400000) / 3600000)
+        const mins = Math.floor((diff % 3600000) / 60000)
+        const secs = Math.floor((diff % 60000) / 1000)
+        d.textContent = String(days).padStart(2, '0')
+        h.textContent = String(hours).padStart(2, '0')
+        m.textContent = String(mins).padStart(2, '0')
+        s.textContent = String(secs).padStart(2, '0')
+    }
+    tick()
+    setInterval(tick, 1000)
+
+    const lines = [
+        { head: 'officially 26-and-a-half-and-a-bit', sub: "27 is just 26 with better taste 🍷" },
+        { head: "the '26 farewell tour' ends in…", sub: 'encore: one (1) year of you, louder 🎤' }
+    ]
+    const headEl = document.getElementById('cd-headline')
+    const subEl = document.getElementById('cd-subline')
+    let i = 0
+    setInterval(() => {
+        i = (i + 1) % lines.length
+        headEl.style.opacity = subEl.style.opacity = '0'
+        setTimeout(() => {
+            headEl.textContent = lines[i].head
+            subEl.textContent = lines[i].sub
+            headEl.style.opacity = subEl.style.opacity = '1'
+        }, 350)
+    }, 5000)
 }
 
 function toggleMusic() {

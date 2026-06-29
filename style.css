@@ -8,10 +8,13 @@ body {
     background-color: #E8F5E9;
     font-family: 'Nunito', sans-serif;
     min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    -webkit-tap-highlight-color: transparent;
     background-image:
         radial-gradient(circle at 15% 85%, #a5d6a7 0%, transparent 40%),
         radial-gradient(circle at 85% 15%, #81c784 0%, transparent 40%),
@@ -239,6 +242,70 @@ h1 {
     font-style: italic;
 }
 
+.countdown-card {
+    margin: 22px auto 0;
+    padding: 20px 28px;
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(10px);
+    border: 1.5px solid rgba(46, 125, 50, 0.25);
+    border-radius: 20px;
+    display: inline-block;
+    box-shadow: 0 8px 24px rgba(46, 125, 50, 0.15);
+    animation: fadeIn 1s ease 1.3s both;
+}
+
+.countdown-line {
+    font-size: 1rem;
+    color: #2e7d32;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+    margin-bottom: 12px;
+    transition: opacity 0.35s ease;
+}
+
+.countdown-grid {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin: 6px 0 10px;
+}
+
+.cd-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 54px;
+    padding: 10px 8px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 12px;
+    border: 1px solid rgba(46, 125, 50, 0.2);
+}
+
+.cd-num {
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: #1b5e20;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+
+.cd-label {
+    font-size: 0.7rem;
+    color: #4caf50;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 4px;
+}
+
+.countdown-sub {
+    font-size: 0.9rem;
+    color: #4caf50;
+    font-weight: 700;
+    font-style: italic;
+    transition: opacity 0.35s ease;
+}
+
 .games-link {
     display: inline-block;
     margin-top: 22px;
@@ -277,4 +344,123 @@ h1 {
 @keyframes codePulse {
     0%, 100% { box-shadow: 0 0 0 0 rgba(46, 125, 50, 0); }
     50% { box-shadow: 0 0 0 6px rgba(46, 125, 50, 0.12); }
+}
+
+/* ===== Mobile ===== */
+@media (max-width: 640px) {
+    body {
+        overflow-y: auto;
+        align-items: flex-start;
+        padding: 16px 0 90px;
+    }
+
+    .container {
+        padding: 20px 14px;
+        width: 100%;
+    }
+
+    h1 {
+        font-size: 1.9rem;
+        margin-bottom: 16px;
+    }
+
+    #cat-gif {
+        width: 170px;
+        height: 170px;
+    }
+
+    .yes-container #cat-gif {
+        width: 210px;
+        height: 210px;
+    }
+
+    .yes-container h1.yes-title {
+        font-size: 2.1rem;
+    }
+
+    .yes-message {
+        font-size: 1.15rem;
+        margin-top: 18px;
+    }
+
+    .buttons {
+        gap: 14px;
+        margin-top: 22px;
+    }
+
+    #yes-btn {
+        font-size: 1.4rem;
+        padding: 16px 36px;
+    }
+
+    #no-btn {
+        font-size: 0.95rem;
+        padding: 11px 24px;
+    }
+
+    .dinner-card,
+    .countdown-card {
+        max-width: calc(100% - 16px);
+        padding: 18px 18px;
+        margin-top: 20px;
+    }
+
+    .dinner-line { font-size: 1rem; }
+    .dinner-date { font-size: 1.65rem; letter-spacing: 0.5px; }
+    .dinner-sub  { font-size: 0.9rem; }
+
+    .countdown-line { font-size: 0.95rem; margin-bottom: 10px; }
+
+    .countdown-grid {
+        gap: 8px;
+    }
+
+    .cd-unit {
+        min-width: 0;
+        flex: 1 1 0;
+        padding: 8px 4px;
+    }
+
+    .cd-num { font-size: 1.35rem; }
+    .cd-label {
+        font-size: 0.62rem;
+        letter-spacing: 0.5px;
+        margin-top: 3px;
+    }
+
+    .countdown-sub { font-size: 0.85rem; }
+
+    .games-link {
+        margin-top: 18px;
+        padding: 12px 22px;
+    }
+
+    .secret-code {
+        font-size: 0.78rem;
+        padding: 6px 10px;
+        bottom: 12px;
+        left: 12px;
+        letter-spacing: 1.5px;
+    }
+
+    #music-toggle {
+        width: 46px;
+        height: 46px;
+        font-size: 1.2rem;
+        bottom: 14px;
+        right: 14px;
+    }
+}
+
+@media (max-width: 360px) {
+    .countdown-grid { gap: 6px; }
+    .cd-num { font-size: 1.2rem; }
+    .yes-container h1.yes-title { font-size: 1.85rem; }
+}
+
+@media (hover: none) {
+    #yes-btn:hover,
+    #no-btn:hover,
+    .games-link:hover,
+    #music-toggle:hover { transform: none; }
 }
