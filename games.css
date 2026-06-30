@@ -362,6 +362,25 @@ body { overflow-y: auto; }
 }
 #code-input:focus { border-color: #4caf50; }
 #code-input.wrong { animation: gateShake 0.4s ease; border-color: #e57373; }
+#riddle-input {
+    width: 100%;
+    max-width: 360px;
+    padding: 14px 18px;
+    margin: 6px auto 4px;
+    display: block;
+    border: 2px solid rgba(46,125,50,0.35);
+    border-radius: 12px;
+    background: rgba(255,255,255,0.85);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 1.1rem;
+    text-align: center;
+    color: #1b5e20;
+    outline: none;
+    transition: border-color 0.2s, transform 0.15s;
+}
+#riddle-input:focus { border-color: #4caf50; }
+#riddle-input.wrong { animation: gateShake 0.4s ease; border-color: #e57373; }
 @keyframes gateShake {
     0%, 100% { transform: translateX(0); }
     25% { transform: translateX(-8px); }

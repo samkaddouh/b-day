@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riddle time 🧠🌷</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=3">
+    <link rel="stylesheet" href="games.css?v=3">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+    <div class="hearts-bg"></div>
+
+    <div id="game-riddle" class="game-view active">
+        <h2>Riddle time 🧠🌷</h2>
+        <p class="game-hint">what is the only country that has all the vowels (A, E, I, O, U) in its name?</p>
+        <input id="riddle-input" type="text" autocomplete="off" spellcheck="false" placeholder="type your answer..." />
+        <p id="riddle-msg" class="game-msg"></p>
+        <button id="riddle-submit" class="primary-btn">answer</button>
+        <br>
+        <a href="yes.html" class="back-link">← back</a>
+    </div>
+
+    <!-- REVEAL MODAL -->
+    <div id="reveal-modal" class="reveal-modal">
+        <div class="reveal-card">
+            <p class="reveal-top">🌷 You got it 🌷</p>
+            <p class="reveal-place">Mozambique 🇲🇿</p>
+            <p class="reveal-city">A · E · I · O · U — all five 💚</p>
+            <p class="reveal-sub">smart girl 😏</p>
+            <button id="reveal-close" class="primary-btn">play again</button>
+        </div>
+    </div>
+
+    <button id="music-toggle" onclick="toggleMusic()" title="Toggle music">🔊</button>
+    <audio id="bg-music" loop>
+        <source src="music/beabadoobee - Glue Song (Lyrics).mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // music
+        let musicPlaying = true
+        const music = document.getElementById('bg-music')
+        music.muted = true
+        music.volume = 0.3
+        music.play().then(() => { music.muted = false }).catch(() => {
+            document.addEventListener('click', () => { music.muted = false; music.play().catch(() => {}) }, { once: true })
+        })
+        function toggleMusic() {
+            if (musicPlaying) { music.pause(); musicPlaying = false; document.getElementById('music-toggle').textContent = '🔇' }
+            else { music.muted = false; music.play(); musicPlaying = true; document.getElementById('music-toggle').textContent = '🔊' }
+        }
+
+        // riddle
+        const RIDDLE_ANSWERS = ['mozambique']
+        const teases = [
+            "not quite... think vowels: A E I O U 🌷",
+            "nope 💚 it's a country in Africa",
+            "still no. starts with M 😏",
+            "hint: M_____bique 🙃",
+            "ok last hint: Mozam____ 💐"
+        ]
+        let wrong = 0
+        const input = document.getElementById('riddle-input')
+        const msg = document.getElementById('riddle-msg')
+        const modal = document.getElementById('reveal-modal')
+        function tryRiddle() {
+            const val = (input.value || '').trim().toLowerCase().replace(/[^a-z]/g, '')
+            if (RIDDLE_ANSWERS.includes(val)) {
+                msg.textContent = "yes! 💚 all five vowels 🌷"
+                setTimeout(() => {
+                    modal.classList.add('show')
+                    if (typeof confetti === 'function') {
+                        confetti({ particleCount: 140, spread: 80, origin: { y: 0.6 }, colors: ['#4caf50','#81c784','#a5d6a7','#fff','#c8e6c9'] })
+                    }
+                }, 400)
+                return
+            }
+            input.classList.remove('wrong')
+            void input.offsetWidth
+            input.classList.add('wrong')
+            msg.textContent = teases[Math.min(wrong, teases.length - 1)]
+            wrong++
+            input.select()
+        }
+        document.getElementById('riddle-submit').addEventListener('click', tryRiddle)
+        input.addEventListener('keydown', (e) => { if (e.key === 'Enter') tryRiddle() })
+        document.getElementById('reveal-close').addEventListener('click', () => {
+            modal.classList.remove('show')
+            input.value = ''
+            msg.textContent = ''
+            wrong = 0
+            input.focus()
+        })
+        setTimeout(() => input.focus(), 150)
+    </script>
+</body>
+</html>
