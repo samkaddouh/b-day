@@ -6,8 +6,8 @@
     <title>Games 🎮🌷</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=3">
-    <link rel="stylesheet" href="games.css?v=3">
+    <link rel="stylesheet" href="style.css?v=5">
+    <link rel="stylesheet" href="games.css?v=5">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 </head>
 <body>
@@ -30,9 +30,10 @@
         <div class="hub-grid">
             <button class="hub-tile locked" data-game="scratch"><span class="tile-emoji">🔒</span><span class="tile-label">???</span></button>
             <button class="hub-tile locked" data-game="doors"><span class="tile-emoji">🔒</span><span class="tile-label">???</span></button>
-            <button class="hub-tile locked" data-game="catch"><span class="tile-emoji">🔒</span><span class="tile-label">???</span></button>
+            <button class="hub-tile" data-game="catch"><span class="tile-emoji">🧺</span><span class="tile-label">catch hearts</span></button>
             <button class="hub-tile locked" data-game="wheel"><span class="tile-emoji">🔒</span><span class="tile-label">???</span></button>
             <button class="hub-tile locked" data-game="envelope"><span class="tile-emoji">🔒</span><span class="tile-label">???</span></button>
+            <button class="hub-tile locked" data-game="maze"><span class="tile-emoji">🔒</span><span class="tile-label">???</span></button>
         </div>
         <p id="locked-msg" class="game-msg"></p>
         <a href="yes.html" class="back-link">← back</a>
@@ -47,6 +48,29 @@
             <div id="basket">🧺</div>
         </div>
         <button class="back-btn" data-back>← back</button>
+    </div>
+
+    <!-- MAZE -->
+    <div id="game-maze" class="game-view">
+        <h2>Find the hotel 🏨</h2>
+        <p class="game-hint">arrow keys or swipe · guide 🚶‍♀️ to 🏨</p>
+        <canvas id="maze-canvas" width="360" height="360"></canvas>
+        <div>
+            <button id="maze-new" class="back-btn" style="margin-right:8px">new maze 🌀</button>
+            <button class="back-btn" data-back>← back</button>
+        </div>
+    </div>
+
+    <!-- MAZE REVEAL (Saifi Suites, Jul 3) -->
+    <div id="maze-reveal" class="reveal-modal">
+        <div class="reveal-card">
+            <p class="reveal-top">🏨 surprise stay 🏨</p>
+            <p class="reveal-place">Saifi Suites</p>
+            <p class="reveal-city">Gemmayzeh, Beirut</p>
+            <p class="reveal-date">Friday · July 3</p>
+            <p class="reveal-sub">just you & me 💚</p>
+            <button id="maze-reveal-close" class="primary-btn">play again</button>
+        </div>
     </div>
 
     <!-- SHARED REVEAL MODAL -->
@@ -66,6 +90,6 @@
         <source src="music/beabadoobee - Glue Song (Lyrics).mp3" type="audio/mpeg">
     </audio>
 
-    <script src="games.js?v=3"></script>
+    <script src="games.js?v=5"></script>
 </body>
 </html>

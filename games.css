@@ -301,6 +301,19 @@ body { overflow-y: auto; }
     font-size: 2.5rem;
 }
 
+/* ===== MAZE ===== */
+#maze-canvas {
+    display: block;
+    margin: 0 auto 14px;
+    background: linear-gradient(180deg, #e8f5e9, #c8e6c9);
+    border-radius: 18px;
+    border: 2px solid rgba(46,125,50,0.35);
+    box-shadow: 0 10px 30px rgba(46,125,50,0.2);
+    touch-action: none;
+    max-width: 100%;
+    height: auto;
+}
+
 /* ===== REVEAL MODAL ===== */
 .reveal-modal {
     display: none;

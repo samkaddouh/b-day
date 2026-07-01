@@ -85,6 +85,11 @@ document.querySelectorAll('.hub-tile').forEach(tile => {
             initCatch()
             return
         }
+        if (game === 'maze') {
+            showView('game-maze')
+            initMaze()
+            return
+        }
         const msg = lockedTeases[lockedIdx % lockedTeases.length]
         lockedIdx++
         lockedMsgEl.textContent = msg
@@ -106,6 +111,17 @@ function showReveal() {
 }
 document.getElementById('reveal-close').addEventListener('click', () => {
     document.getElementById('reveal-modal').classList.remove('show')
+    showView('hub')
+})
+
+function showMazeReveal() {
+    document.getElementById('maze-reveal').classList.add('show')
+    if (typeof confetti === 'function') {
+        confetti({ particleCount: 160, spread: 90, origin: { y: 0.6 }, colors: ['#4caf50','#81c784','#a5d6a7','#fff','#ffcdd2'] })
+    }
+}
+document.getElementById('maze-reveal-close').addEventListener('click', () => {
+    document.getElementById('maze-reveal').classList.remove('show')
     showView('hub')
 })
 
@@ -205,3 +221,112 @@ function initCatch() {
     }, 30)
     catchState = { spawn, tick, keyHandler }
 }
+
+// ===== MAZE =====
+let mazeState = null
+function initMaze() {
+    const canvas = document.getElementById('maze-canvas')
+    const ctx = canvas.getContext('2d')
+    const COLS = 11, ROWS = 11
+    const cell = canvas.width / COLS
+
+    // DFS maze generation — each cell has 4 walls; we knock down walls between neighbors
+    const cells = Array.from({ length: ROWS }, () => Array.from({ length: COLS }, () => ({ n:true, e:true, s:true, w:true, v:false })))
+    function carve(cx, cy) {
+        cells[cy][cx].v = true
+        const dirs = [[0,-1,'n','s'],[1,0,'e','w'],[0,1,'s','n'],[-1,0,'w','e']].sort(() => Math.random() - 0.5)
+        for (const [dx, dy, a, b] of dirs) {
+            const nx = cx + dx, ny = cy + dy
+            if (nx < 0 || ny < 0 || nx >= COLS || ny >= ROWS) continue
+            if (cells[ny][nx].v) continue
+            cells[cy][cx][a] = false
+            cells[ny][nx][b] = false
+            carve(nx, ny)
+        }
+    }
+    carve(0, 0)
+
+    let px = 0, py = 0
+    let facing = 'right' // 🚶‍♀️ default glyph faces left; we flip to face right by default (goal is bottom-right)
+    const gx = COLS - 1, gy = ROWS - 1
+    let won = false
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        // walls
+        ctx.strokeStyle = '#2e7d32'
+        ctx.lineWidth = 3
+        ctx.lineCap = 'round'
+        for (let y = 0; y < ROWS; y++) {
+            for (let x = 0; x < COLS; x++) {
+                const c = cells[y][x]
+                const x0 = x * cell, y0 = y * cell
+                ctx.beginPath()
+                if (c.n) { ctx.moveTo(x0, y0); ctx.lineTo(x0 + cell, y0) }
+                if (c.e) { ctx.moveTo(x0 + cell, y0); ctx.lineTo(x0 + cell, y0 + cell) }
+                if (c.s) { ctx.moveTo(x0, y0 + cell); ctx.lineTo(x0 + cell, y0 + cell) }
+                if (c.w) { ctx.moveTo(x0, y0); ctx.lineTo(x0, y0 + cell) }
+                ctx.stroke()
+            }
+        }
+        // goal
+        ctx.font = (cell * 0.7) + 'px serif'
+        ctx.textAlign = 'center'
+        ctx.textBaseline = 'middle'
+        ctx.fillText('🏨', gx * cell + cell / 2, gy * cell + cell / 2)
+        // player — glyph natively faces left; flip horizontally when facing right
+        const cxp = px * cell + cell / 2
+        const cyp = py * cell + cell / 2
+        ctx.save()
+        if (facing === 'right') {
+            ctx.translate(cxp, cyp)
+            ctx.scale(-1, 1)
+            ctx.fillText('🚶‍♀️', 0, 0)
+        } else {
+            ctx.fillText('🚶‍♀️', cxp, cyp)
+        }
+        ctx.restore()
+    }
+    draw()
+
+    function move(dx, dy) {
+        if (won) return
+        const c = cells[py][px]
+        if (dx === 1 && c.e) return
+        if (dx === -1 && c.w) return
+        if (dy === 1 && c.s) return
+        if (dy === -1 && c.n) return
+        if (dx === 1) facing = 'right'
+        else if (dx === -1) facing = 'left'
+        px += dx; py += dy
+        draw()
+        if (px === gx && py === gy) {
+            won = true
+            setTimeout(showMazeReveal, 350)
+        }
+    }
+
+    const keyHandler = (e) => {
+        if (document.getElementById('game-maze').classList.contains('active') === false) return
+        if (e.key === 'ArrowUp') { e.preventDefault(); move(0, -1) }
+        if (e.key === 'ArrowDown') { e.preventDefault(); move(0, 1) }
+        if (e.key === 'ArrowLeft') { e.preventDefault(); move(-1, 0) }
+        if (e.key === 'ArrowRight') { e.preventDefault(); move(1, 0) }
+    }
+    if (mazeState) window.removeEventListener('keydown', mazeState.keyHandler)
+    window.addEventListener('keydown', keyHandler)
+
+    // Touch swipe
+    let tsx = 0, tsy = 0
+    canvas.ontouchstart = (e) => { const t = e.touches[0]; tsx = t.clientX; tsy = t.clientY }
+    canvas.ontouchend = (e) => {
+        const t = e.changedTouches[0]
+        const dx = t.clientX - tsx, dy = t.clientY - tsy
+        if (Math.abs(dx) < 20 && Math.abs(dy) < 20) return
+        if (Math.abs(dx) > Math.abs(dy)) move(dx > 0 ? 1 : -1, 0)
+        else move(0, dy > 0 ? 1 : -1)
+    }
+
+    mazeState = { keyHandler }
+}
+document.getElementById('maze-new').addEventListener('click', initMaze)
