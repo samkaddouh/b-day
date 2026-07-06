@@ -6,8 +6,8 @@
     <title>Games 🎮🌷</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=5">
-    <link rel="stylesheet" href="games.css?v=5">
+    <link rel="stylesheet" href="style.css?v=7">
+    <link rel="stylesheet" href="games.css?v=9">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 </head>
 <body>
@@ -33,7 +33,7 @@
             <button class="hub-tile" data-game="catch"><span class="tile-emoji">🧺</span><span class="tile-label">catch hearts</span></button>
             <button class="hub-tile locked" data-game="wheel"><span class="tile-emoji">🔒</span><span class="tile-label">???</span></button>
             <button class="hub-tile locked" data-game="envelope"><span class="tile-emoji">🔒</span><span class="tile-label">???</span></button>
-            <button class="hub-tile locked" data-game="maze"><span class="tile-emoji">🔒</span><span class="tile-label">???</span></button>
+            <button class="hub-tile" data-game="maze"><span class="tile-emoji">🏨</span><span class="tile-label">find the hotel</span></button>
         </div>
         <p id="locked-msg" class="game-msg"></p>
         <a href="yes.html" class="back-link">← back</a>
@@ -58,6 +58,36 @@
         <div>
             <button id="maze-new" class="back-btn" style="margin-right:8px">new maze 🌀</button>
             <button class="back-btn" data-back>← back</button>
+        </div>
+    </div>
+
+    <!-- CONSTELLATION -->
+    <div id="game-constellation" class="game-view">
+        <h2>Draw your constellation 🌙</h2>
+        <p class="game-hint">tap the stars in order · 1 → 5 ✨</p>
+        <div id="constellation-stage" class="constellation-stage">
+            <svg id="constellation-lines" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
+            <button class="star-btn" data-order="1" style="left:18%;top:82%"><span class="star-glow">✦</span><span class="star-num">1</span></button>
+            <button class="star-btn" data-order="2" style="left:78%;top:78%"><span class="star-glow">✦</span><span class="star-num">2</span></button>
+            <button class="star-btn" data-order="3" style="left:55%;top:50%"><span class="star-glow">✦</span><span class="star-num">3</span></button>
+            <button class="star-btn" data-order="4" style="left:50%;top:28%"><span class="star-glow">✦</span><span class="star-num">4</span></button>
+            <button class="star-btn" data-order="5" style="left:25%;top:40%"><span class="star-glow">✦</span><span class="star-num">5</span></button>
+        </div>
+        <div>
+            <button id="constellation-reset" class="back-btn" style="margin-right:8px">reset 🌀</button>
+            <button class="back-btn" data-back>← back</button>
+        </div>
+    </div>
+
+    <!-- CONSTELLATION REVEAL -->
+    <div id="constellation-reveal" class="reveal-modal">
+        <div class="reveal-card cosmic-card">
+            <p class="reveal-top">🌙 born under the moon 🌙</p>
+            <p class="reveal-place">♋ Cancer</p>
+            <p class="reveal-city">ruled by the moon · water sign</p>
+            <p class="reveal-date">happy birthday, you crab 🦀</p>
+            <p class="reveal-sub">you're 27, you silly goose 💚</p>
+            <button id="constellation-reveal-close" class="primary-btn">again</button>
         </div>
     </div>
 
@@ -90,6 +120,6 @@
         <source src="music/beabadoobee - Glue Song (Lyrics).mp3" type="audio/mpeg">
     </audio>
 
-    <script src="games.js?v=5"></script>
+    <script src="games.js?v=7"></script>
 </body>
 </html>

@@ -159,6 +159,40 @@ h1 {
 }
 
 
+.delivered-sub {
+    font-size: 1.15rem;
+    color: #2e7d32;
+    font-weight: 800;
+    font-style: italic;
+    margin-top: -6px;
+    margin-bottom: 4px;
+    letter-spacing: 0.3px;
+    animation: fadeIn 0.8s ease 0.2s both;
+}
+
+#open-bday-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    text-decoration: none;
+    border: none;
+    border-radius: 18px;
+    font-size: 1.5rem;
+    font-weight: 900;
+    font-family: 'Nunito', sans-serif;
+    padding: 20px 42px;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 8px 24px rgba(76, 175, 80, 0.5);
+    letter-spacing: 1px;
+    animation: fadeIn 0.9s ease 0.5s both, wiggle 2.4s ease-in-out 1.4s infinite;
+}
+#open-bday-btn:hover {
+    transform: scale(1.06) translateY(-2px);
+    box-shadow: 0 12px 32px rgba(76, 175, 80, 0.6);
+}
+#open-bday-btn:active { transform: scale(0.98); }
+
 #tease-toast {
     margin-top: 14px;
     font-size: 1rem;
@@ -323,6 +357,101 @@ h1 {
     font-weight: 700;
     font-style: italic;
     transition: opacity 0.35s ease;
+}
+
+/* ===== Birthday morph (fires at 00:00:00) ===== */
+.countdown-card.birthday-mode {
+    background: linear-gradient(135deg, #fffde7, #f1f8e9 55%, #e8f5e9);
+    border-color: rgba(255, 213, 79, 0.6);
+    box-shadow: 0 14px 40px rgba(255, 213, 79, 0.35), 0 0 0 4px rgba(255, 213, 79, 0.18);
+    animation: bdayPulse 2.4s ease-in-out infinite, bdayPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    padding: 26px 32px;
+}
+.countdown-card.birthday-mode .countdown-grid { display: none; }
+.countdown-card.birthday-mode .countdown-line {
+    color: #1b5e20;
+    font-size: 1.15rem;
+    letter-spacing: 0.6px;
+}
+.countdown-card.birthday-mode .countdown-sub {
+    color: #2e7d32;
+    font-size: 1rem;
+    margin-top: 10px;
+}
+.birthday-big {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    margin: 14px 0 8px;
+    animation: fadeIn 0.7s ease 0.15s both;
+}
+.birthday-big .bd-line {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #1b5e20;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 0 rgba(255, 213, 79, 0.5), 0 4px 14px rgba(46, 125, 50, 0.2);
+    line-height: 1.05;
+    animation: bdayWiggle 2.2s ease-in-out infinite;
+}
+.birthday-big .bd-sub {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #2e7d32;
+    letter-spacing: 0.5px;
+}
+.birthday-big .bd-open {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #4caf50, #388e3c);
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    border-radius: 999px;
+    box-shadow: 0 6px 18px rgba(76, 175, 80, 0.45);
+    animation: bdayOpenPulse 1.6s ease-in-out infinite;
+}
+@keyframes bdayOpenPulse {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50%      { transform: translateY(-2px) scale(1.05); }
+}
+.countdown-card.birthday-clickable {
+    cursor: pointer;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.countdown-card.birthday-clickable:hover {
+    transform: translateY(-3px) scale(1.02);
+}
+.countdown-card.birthday-clickable:active {
+    transform: scale(0.98);
+}
+@keyframes bdayPulse {
+    0%, 100% { box-shadow: 0 14px 40px rgba(255, 213, 79, 0.35), 0 0 0 4px rgba(255, 213, 79, 0.18); }
+    50%      { box-shadow: 0 18px 52px rgba(255, 213, 79, 0.55), 0 0 0 8px rgba(255, 213, 79, 0.28); }
+}
+@keyframes bdayWiggle {
+    0%, 100% { transform: rotate(-1deg) scale(1); }
+    50%      { transform: rotate(1deg) scale(1.03); }
+}
+@keyframes bdayPop {
+    from { transform: scale(0.85); opacity: 0.6; }
+    to   { transform: scale(1); opacity: 1; }
+}
+body.birthday-glow::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse at 50% 30%, rgba(255, 213, 79, 0.18), transparent 55%);
+    z-index: 0;
+    animation: fadeIn 1s ease both;
+}
+@media (max-width: 640px) {
+    .birthday-big .bd-line { font-size: 1.55rem; letter-spacing: 1.5px; }
+    .birthday-big .bd-sub  { font-size: 1rem; }
 }
 
 .games-link {

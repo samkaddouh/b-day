@@ -53,6 +53,12 @@ codeSubmit.addEventListener('click', tryCode)
 codeInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') tryCode() })
 setTimeout(() => codeInput.focus(), 200)
 
+// Auto-open a game via ?open=<name> (skips code gate — used by the birthday-card link)
+const openParam = new URLSearchParams(location.search).get('open')
+if (openParam) {
+    gate.classList.remove('show')
+}
+
 // ===== Router =====
 function showView(id) {
     document.querySelectorAll('.game-view').forEach(v => v.classList.remove('active'))
@@ -88,6 +94,11 @@ document.querySelectorAll('.hub-tile').forEach(tile => {
         if (game === 'maze') {
             showView('game-maze')
             initMaze()
+            return
+        }
+        if (game === 'constellation') {
+            showView('game-constellation')
+            initConstellation()
             return
         }
         const msg = lockedTeases[lockedIdx % lockedTeases.length]
@@ -330,3 +341,76 @@ function initMaze() {
     mazeState = { keyHandler }
 }
 document.getElementById('maze-new').addEventListener('click', initMaze)
+
+// Handle ?open=<game> (auto-launch after gate bypass)
+if (openParam === 'constellation') {
+    showView('game-constellation')
+    initConstellation()
+} else if (openParam === 'catch') {
+    showView('game-catch')
+    initCatch()
+} else if (openParam === 'maze') {
+    showView('game-maze')
+    initMaze()
+}
+
+// ===== CONSTELLATION =====
+function initConstellation() {
+    const stage = document.getElementById('constellation-stage')
+    const svg = document.getElementById('constellation-lines')
+    const stars = Array.from(stage.querySelectorAll('.star-btn'))
+    // Star positions in svg viewBox coords (0-100, matching % placement)
+    const pos = { 1:[18,82], 2:[78,78], 3:[55,50], 4:[50,28], 5:[25,40] }
+    let next = 1
+    let won = false
+
+    // reset
+    svg.innerHTML = ''
+    stars.forEach(s => s.classList.remove('lit'))
+    stage.classList.remove('won', 'shake')
+
+    stars.forEach(star => {
+        star.onclick = () => {
+            if (won) return
+            const order = parseInt(star.dataset.order, 10)
+            if (order !== next) {
+                stage.classList.remove('shake')
+                void stage.offsetWidth
+                stage.classList.add('shake')
+                return
+            }
+            star.classList.add('lit')
+            if (next > 1) {
+                const [x1, y1] = pos[next - 1]
+                const [x2, y2] = pos[next]
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line')
+                line.setAttribute('x1', x1)
+                line.setAttribute('y1', y1)
+                line.setAttribute('x2', x2)
+                line.setAttribute('y2', y2)
+                svg.appendChild(line)
+            }
+            next++
+            if (next > 5) {
+                won = true
+                stage.classList.add('won')
+                setTimeout(showConstellationReveal, 550)
+            }
+        }
+    })
+}
+
+function showConstellationReveal() {
+    document.getElementById('constellation-reveal').classList.add('show')
+    if (typeof confetti === 'function') {
+        confetti({ particleCount: 120, spread: 90, origin: { y: 0.5 }, colors: ['#fff59d','#ffd54f','#b39ddb','#ce93d8','#ffffff','#81d4fa'] })
+        setTimeout(() => {
+            confetti({ particleCount: 60, spread: 120, startVelocity: 25, origin: { y: 0.4 }, shapes: ['circle'], colors: ['#ffffff','#fff59d','#b39ddb'] })
+        }, 400)
+    }
+}
+document.getElementById('constellation-reveal-close').addEventListener('click', () => {
+    document.getElementById('constellation-reveal').classList.remove('show')
+    initConstellation()
+})
+document.getElementById('constellation-reset').addEventListener('click', initConstellation)
