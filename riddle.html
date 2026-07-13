@@ -15,20 +15,25 @@
 
     <div id="game-riddle" class="game-view active">
         <h2>Riddle time 🧠🌷</h2>
-        <p class="game-hint">what is the only country that has all the vowels (A, E, I, O, U) in its name?</p>
+        <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:6px">
+            <button id="riddle-prev" type="button" style="background:transparent;border:none;color:inherit;font-size:1.2em;cursor:pointer;opacity:.7">‹</button>
+            <p id="riddle-counter" class="game-hint" style="opacity:.7;margin:0">riddle 1 of 2</p>
+            <button id="riddle-next" type="button" style="background:transparent;border:none;color:inherit;font-size:1.2em;cursor:pointer;opacity:.7">›</button>
+        </div>
+        <p id="riddle-question" class="game-hint">what is the only country that has all the vowels (A, E, I, O, U) in its name?</p>
         <input id="riddle-input" type="text" autocomplete="off" spellcheck="false" placeholder="type your answer..." />
         <p id="riddle-msg" class="game-msg"></p>
         <button id="riddle-submit" class="primary-btn">answer</button>
         <br>
-        <a href="yes.html" class="back-link">← back</a>
+        <a href="index.html" class="back-link">← back</a>
     </div>
 
     <!-- REVEAL MODAL -->
     <div id="reveal-modal" class="reveal-modal">
         <div class="reveal-card">
-            <p class="reveal-top">🌷 You got it 🌷</p>
-            <p class="reveal-place">Mozambique 🇲🇿</p>
-            <p class="reveal-city">A · E · I · O · U — all five 💚</p>
+            <p class="reveal-top">🌷 You got them both 🌷</p>
+            <p class="reveal-place">Mozambique 🇲🇿 · Luxembourg 🇱🇺</p>
+            <p class="reveal-city">all five vowels · ends with a G 💚</p>
             <p class="reveal-sub">smart girl 😏</p>
             <button id="reveal-close" class="primary-btn">play again</button>
         </div>
@@ -53,46 +58,89 @@
             else { music.muted = false; music.play(); musicPlaying = true; document.getElementById('music-toggle').textContent = '🔊' }
         }
 
-        // riddle
-        const RIDDLE_ANSWERS = ['mozambique']
-        const teases = [
-            "not quite... think vowels: A E I O U 🌷",
-            "nope 💚 it's a country in Africa",
-            "still no. starts with M 😏",
-            "hint: M_____bique 🙃",
-            "ok last hint: Mozam____ 💐"
+        // riddles
+        const RIDDLES = [
+            {
+                question: "what is the only country that has all the vowels (A, E, I, O, U) in its name?",
+                answers: ['mozambique'],
+                success: "yes! 💚 all five vowels 🌷",
+                teases: [
+                    "not quite... think vowels: A E I O U 🌷",
+                    "nope 💚 it's a country in Africa",
+                    "still no. starts with M 😏",
+                    "hint: M_____bique 🙃",
+                    "ok last hint: Mozam____ 💐"
+                ]
+            },
+            {
+                question: "what is the only country whose name ends with a G?",
+                answers: ['luxembourg'],
+                success: "yes! 💚 ends in G 🌷",
+                teases: [
+                    "not quite... think tiny + European 🌷",
+                    "nope 💚 it's a small country, big bank vibes",
+                    "still no. starts with L 😏",
+                    "hint: Lux______g 🙃",
+                    "ok last hint: Luxem____g 💐"
+                ]
+            }
         ]
+        let stage = 0
         let wrong = 0
         const input = document.getElementById('riddle-input')
         const msg = document.getElementById('riddle-msg')
+        const questionEl = document.getElementById('riddle-question')
+        const counterEl = document.getElementById('riddle-counter')
         const modal = document.getElementById('reveal-modal')
+        function loadStage() {
+            questionEl.textContent = RIDDLES[stage].question
+            counterEl.textContent = `riddle ${stage + 1} of ${RIDDLES.length}`
+            input.value = ''
+            msg.textContent = ''
+            wrong = 0
+            input.focus()
+        }
         function tryRiddle() {
+            const r = RIDDLES[stage]
             const val = (input.value || '').trim().toLowerCase().replace(/[^a-z]/g, '')
-            if (RIDDLE_ANSWERS.includes(val)) {
-                msg.textContent = "yes! 💚 all five vowels 🌷"
-                setTimeout(() => {
-                    modal.classList.add('show')
-                    if (typeof confetti === 'function') {
-                        confetti({ particleCount: 140, spread: 80, origin: { y: 0.6 }, colors: ['#4caf50','#81c784','#a5d6a7','#fff','#c8e6c9'] })
-                    }
-                }, 400)
+            if (r.answers.includes(val)) {
+                msg.textContent = r.success
+                if (typeof confetti === 'function') {
+                    confetti({ particleCount: 90, spread: 70, origin: { y: 0.6 }, colors: ['#4caf50','#81c784','#a5d6a7','#fff','#c8e6c9'] })
+                }
+                if (stage < RIDDLES.length - 1) {
+                    setTimeout(() => { stage++; loadStage() }, 900)
+                } else {
+                    setTimeout(() => {
+                        modal.classList.add('show')
+                        if (typeof confetti === 'function') {
+                            confetti({ particleCount: 160, spread: 90, origin: { y: 0.6 }, colors: ['#4caf50','#81c784','#a5d6a7','#fff','#c8e6c9'] })
+                        }
+                    }, 500)
+                }
                 return
             }
             input.classList.remove('wrong')
             void input.offsetWidth
             input.classList.add('wrong')
-            msg.textContent = teases[Math.min(wrong, teases.length - 1)]
+            msg.textContent = r.teases[Math.min(wrong, r.teases.length - 1)]
             wrong++
             input.select()
         }
+        document.getElementById('riddle-prev').addEventListener('click', () => {
+            stage = (stage - 1 + RIDDLES.length) % RIDDLES.length
+            loadStage()
+        })
+        document.getElementById('riddle-next').addEventListener('click', () => {
+            stage = (stage + 1) % RIDDLES.length
+            loadStage()
+        })
         document.getElementById('riddle-submit').addEventListener('click', tryRiddle)
         input.addEventListener('keydown', (e) => { if (e.key === 'Enter') tryRiddle() })
         document.getElementById('reveal-close').addEventListener('click', () => {
             modal.classList.remove('show')
-            input.value = ''
-            msg.textContent = ''
-            wrong = 0
-            input.focus()
+            stage = 0
+            loadStage()
         })
         setTimeout(() => input.focus(), 150)
     </script>
