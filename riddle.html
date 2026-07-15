@@ -17,7 +17,7 @@
         <h2>Riddle time 🧠🌷</h2>
         <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:6px">
             <button id="riddle-prev" type="button" style="background:transparent;border:none;color:inherit;font-size:1.2em;cursor:pointer;opacity:.7">‹</button>
-            <p id="riddle-counter" class="game-hint" style="opacity:.7;margin:0">riddle 1 of 2</p>
+            <p id="riddle-counter" class="game-hint" style="opacity:.7;margin:0">riddle 1 of 3</p>
             <button id="riddle-next" type="button" style="background:transparent;border:none;color:inherit;font-size:1.2em;cursor:pointer;opacity:.7">›</button>
         </div>
         <p id="riddle-question" class="game-hint">what is the only country that has all the vowels (A, E, I, O, U) in its name?</p>
@@ -154,6 +154,7 @@
             stage = 0
             loadStage()
         })
+        loadStage()
         setTimeout(() => input.focus(), 150)
     </script>
 </body>
