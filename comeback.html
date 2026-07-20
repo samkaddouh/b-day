@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>you asked for it 🌷</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=8">
+    <link rel="stylesheet" href="games.css?v=4">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+    <div class="hearts-bg"></div>
+
+    <!-- STORY / CHAT -->
+    <div id="story-view" class="game-view active">
+        <h2>you felt the heat 😏🌷</h2>
+
+        <div class="chat-wrap">
+            <div class="bubble me" style="animation-delay:.1s">
+                <span class="who">me</span>
+                i stopped updating the site. you never look at it anyway 🤷
+            </div>
+            <div class="bubble her" style="animation-delay:1.1s">
+                <span class="who">sirine</span>
+                wait what?? why did you stop 🙁
+            </div>
+            <div class="bubble me" style="animation-delay:2.1s">
+                <span class="who">me</span>
+                oh NOW you care 😏
+            </div>
+            <div class="bubble her" style="animation-delay:3.1s">
+                <span class="who">sirine</span>
+                okok i'm sorry… please update it 🥺💚
+            </div>
+            <div class="bubble me" style="animation-delay:4.1s">
+                <span class="who">me</span>
+                fine 😌 there — updated. fresh riddles waiting for you 👇
+            </div>
+        </div>
+
+        <button id="to-riddles" class="primary-btn chat-continue" style="animation-delay:5s">let's go 🌷</button>
+        <br>
+        <a href="index.html" class="back-link">← back</a>
+    </div>
+
+    <!-- RIDDLES -->
+    <div id="game-riddle" class="game-view">
+        <h2>earn the update 🧠🌷</h2>
+        <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:6px">
+            <button id="riddle-prev" type="button" style="background:transparent;border:none;color:inherit;font-size:1.2em;cursor:pointer;opacity:.7">‹</button>
+            <p id="riddle-counter" class="game-hint" style="opacity:.7;margin:0">riddle 1 of 6</p>
+            <button id="riddle-next" type="button" style="background:transparent;border:none;color:inherit;font-size:1.2em;cursor:pointer;opacity:.7">›</button>
+        </div>
+        <p id="riddle-question" class="game-hint"></p>
+        <input id="riddle-input" type="text" autocomplete="off" spellcheck="false" placeholder="type your answer..." />
+        <p id="riddle-msg" class="game-msg"></p>
+        <button id="riddle-submit" class="primary-btn">answer</button>
+        <br>
+        <a href="index.html" class="back-link">← back</a>
+    </div>
+
+    <!-- REVEAL MODAL -->
+    <div id="reveal-modal" class="reveal-modal">
+        <div class="reveal-card">
+            <p class="reveal-top">🌷 all six. you earned it 🌷</p>
+            <p class="reveal-place">the site is updated 💚</p>
+            <p class="reveal-city">see? worth showing up for 😏</p>
+            <p class="reveal-sub">now don't make me go quiet again 🙃</p>
+            <button id="reveal-close" class="primary-btn">play again</button>
+        </div>
+    </div>
+
+    <button id="music-toggle" onclick="toggleMusic()" title="Toggle music">🔊</button>
+    <audio id="bg-music" loop>
+        <source src="music/beabadoobee - Glue Song (Lyrics).mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // music
+        let musicPlaying = true
+        const music = document.getElementById('bg-music')
+        music.muted = true
+        music.volume = 0.3
+        music.play().then(() => { music.muted = false }).catch(() => {
+            document.addEventListener('click', () => { music.muted = false; music.play().catch(() => {}) }, { once: true })
+        })
+        function toggleMusic() {
+            if (musicPlaying) { music.pause(); musicPlaying = false; document.getElementById('music-toggle').textContent = '🔇' }
+            else { music.muted = false; music.play(); musicPlaying = true; document.getElementById('music-toggle').textContent = '🔊' }
+        }
+
+        // story -> riddles
+        document.getElementById('to-riddles').addEventListener('click', () => {
+            document.getElementById('story-view').classList.remove('active')
+            document.getElementById('game-riddle').classList.add('active')
+            loadStage()
+            setTimeout(() => input.focus(), 150)
+        })
+
+        // riddles
+        const RIDDLES = [
+            {
+                question: "what belongs to you, but other people use it more?",
+                answers: ['yourname', 'name', 'myname'],
+                success: "yes! 💚 your name 🌷",
+                teases: [
+                    "nope 💚 you own it but everyone else says it more",
+                    "not a thing... it's what people call you 🌷",
+                    "think: i say it, you say it, everyone says it 😏",
+                    "hint: it's what i whisper 🙃",
+                    "ok last hint: your n___ 💐"
+                ]
+            },
+            {
+                question: "what gets wetter the more it dries?",
+                answers: ['atowel', 'towel'],
+                success: "yes! 💚 a towel 🌷",
+                teases: [
+                    "nope 💚 it does its whole job by getting wet",
+                    "not quite... you reach for it after a shower 🌷",
+                    "think bathroom, soft, fluffy 😏",
+                    "hint: t____ 🙃",
+                    "ok last hint: tow__ 💐"
+                ]
+            },
+            {
+                question: "i have a head and a tail, but no body. what am i?",
+                answers: ['acoin', 'coin'],
+                success: "yes! 💚 a coin 🌷",
+                teases: [
+                    "nope 💚 heads or tails?",
+                    "not quite... small, round, and it jingles 🌷",
+                    "think: you flip it to decide 😏",
+                    "hint: c___ 🙃",
+                    "ok last hint: co_n 💐"
+                ]
+            },
+            {
+                question: "i have cities, but no houses. i have mountains, but no trees. i have water, but no fish. what am i?",
+                answers: ['amap', 'map'],
+                success: "yes! 💚 a map 🌷",
+                teases: [
+                    "nope 💚 it shows you where to go",
+                    "not quite... cities but no houses, remember? 🌷",
+                    "think: you fold it, or you open google ___ 😏",
+                    "hint: m_p 🙃",
+                    "ok last hint: ma_ 💐"
+                ]
+            },
+            {
+                question: "what goes up but never comes down?",
+                answers: ['yourage', 'age', 'myage'],
+                success: "yes! 💚 your age 🌷",
+                teases: [
+                    "nope 💚 it only ever climbs",
+                    "not quite... it ticks up every birthday 😏",
+                    "think: something you gain a year of 🌷",
+                    "hint: your a__ 🙃",
+                    "ok last hint: your ag_ 💐"
+                ]
+            },
+            {
+                question: "the more you take, the more you leave behind. what are they?",
+                answers: ['footsteps', 'footprints', 'steps'],
+                success: "yes! 💚 footsteps 🌷 smart girl 😏",
+                teases: [
+                    "nope 💚 you leave them behind as you walk",
+                    "not quite... the more you take, the more behind you 🌷",
+                    "think: on the beach, in the sand 😏",
+                    "hint: foot_____ 🙃",
+                    "ok last hint: foot_teps 💐"
+                ]
+            }
+        ]
+        let stage = 0
+        let wrong = 0
+        const input = document.getElementById('riddle-input')
+        const msg = document.getElementById('riddle-msg')
+        const questionEl = document.getElementById('riddle-question')
+        const counterEl = document.getElementById('riddle-counter')
+        const modal = document.getElementById('reveal-modal')
+        function loadStage() {
+            questionEl.textContent = RIDDLES[stage].question
+            counterEl.textContent = `riddle ${stage + 1} of ${RIDDLES.length}`
+            input.value = ''
+            msg.textContent = ''
+            wrong = 0
+            input.focus()
+        }
+        function tryRiddle() {
+            const r = RIDDLES[stage]
+            const val = (input.value || '').trim().toLowerCase().replace(/[^a-z]/g, '')
+            if (r.answers.includes(val)) {
+                msg.textContent = r.success
+                if (typeof confetti === 'function') {
+                    confetti({ particleCount: 90, spread: 70, origin: { y: 0.6 }, colors: ['#4caf50','#81c784','#a5d6a7','#fff','#c8e6c9'] })
+                }
+                if (stage < RIDDLES.length - 1) {
+                    setTimeout(() => { stage++; loadStage() }, 900)
+                } else {
+                    setTimeout(() => {
+                        modal.classList.add('show')
+                        if (typeof confetti === 'function') {
+                            confetti({ particleCount: 160, spread: 90, origin: { y: 0.6 }, colors: ['#4caf50','#81c784','#a5d6a7','#fff','#c8e6c9'] })
+                        }
+                    }, 500)
+                }
+                return
+            }
+            input.classList.remove('wrong')
+            void input.offsetWidth
+            input.classList.add('wrong')
+            msg.textContent = r.teases[Math.min(wrong, r.teases.length - 1)]
+            wrong++
+            input.select()
+        }
+        document.getElementById('riddle-prev').addEventListener('click', () => {
+            stage = (stage - 1 + RIDDLES.length) % RIDDLES.length
+            loadStage()
+        })
+        document.getElementById('riddle-next').addEventListener('click', () => {
+            stage = (stage + 1) % RIDDLES.length
+            loadStage()
+        })
+        document.getElementById('riddle-submit').addEventListener('click', tryRiddle)
+        input.addEventListener('keydown', (e) => { if (e.key === 'Enter') tryRiddle() })
+        document.getElementById('reveal-close').addEventListener('click', () => {
+            modal.classList.remove('show')
+            stage = 0
+            loadStage()
+        })
+    </script>
+</body>
+</html>

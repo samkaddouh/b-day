@@ -636,3 +636,59 @@ body { overflow-y: auto; }
     .back-btn:hover,
     .back-link:hover { transform: none; box-shadow: 0 4px 14px rgba(46,125,50,0.12); }
 }
+
+/* ===== The comeback chat (she felt the heat) ===== */
+.chat-wrap {
+    max-width: 440px;
+    margin: 4px auto 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: left;
+}
+.bubble {
+    max-width: 82%;
+    padding: 11px 16px;
+    border-radius: 18px;
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 1.35;
+    opacity: 0;
+    transform: translateY(8px);
+    animation: bubbleIn 0.5s ease forwards;
+    box-shadow: 0 4px 12px rgba(46,125,50,0.12);
+}
+.bubble.her {
+    align-self: flex-start;
+    background: rgba(255,255,255,0.9);
+    color: #1b5e20;
+    border-bottom-left-radius: 5px;
+    border: 1.5px solid rgba(46,125,50,0.18);
+}
+.bubble.me {
+    align-self: flex-end;
+    background: linear-gradient(135deg, #4CAF50, #388e3c);
+    color: #fff;
+    border-bottom-right-radius: 5px;
+}
+.bubble .who {
+    display: block;
+    font-size: 0.68rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.7;
+    margin-bottom: 3px;
+}
+@keyframes bubbleIn {
+    to { opacity: 1; transform: translateY(0); }
+}
+.chat-continue {
+    margin-top: 8px;
+    opacity: 0;
+    animation: fadeIn 0.6s ease forwards;
+}
+@media (max-width: 640px) {
+    .chat-wrap { max-width: 100%; }
+    .bubble { font-size: 0.95rem; max-width: 88%; }
+}
